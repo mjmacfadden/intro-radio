@@ -1,0 +1,25 @@
+{
+  "name": "Intro Radio",
+  "short_name": "Intro Radio",
+  "description": "A retro-futuristic, Winamp-inspired radio player",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b0b17",
+  "theme_color": "#0b0b17",
+  "icons": [
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
