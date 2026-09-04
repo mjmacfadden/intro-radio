@@ -9,7 +9,7 @@
       <stop offset="100%" stop-color="#ff3ec8"/>
     </linearGradient>
   </defs>
-  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
+  <rect width="512" height="512" fill="url(#bg)"/>
   <circle cx="256" cy="196" r="120" fill="none" stroke="url(#ring)" stroke-width="12"/>
   <circle cx="256" cy="196" r="82" fill="#041012" stroke="#37f2c4" stroke-width="5"/>
   <polygon points="228,150 228,242 312,196" fill="#37f2c4"/>
