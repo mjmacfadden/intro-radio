@@ -1,5 +1,5 @@
 // INTRO RADIO — service worker: caches the app shell and tracks for offline playback.
-const CACHE_NAME = "intro-radio-v2";
+const CACHE_NAME = "intro-radio-v6";
 const ASSETS = [
   "./",
   "./index.html",

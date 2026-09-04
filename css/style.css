@@ -26,11 +26,11 @@ html, body {
 
 body {
   margin: 0;
-  min-height: 100%;
+  min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
-  padding: 24px;
+  padding: 0;
   background:
     radial-gradient(circle at 20% 20%, #241a3d 0%, transparent 45%),
     radial-gradient(circle at 80% 80%, #0d2b3d 0%, transparent 45%),
@@ -59,15 +59,9 @@ body {
 /* ---------------------------------- player shell ---------------------- */
 
 .player {
-  width: min(480px, 100%);
-  border-radius: 14px;
+  width: 100%;
   padding: 10px;
   background: linear-gradient(160deg, var(--bezel-light), var(--bezel-dark) 60%);
-  box-shadow:
-    0 0 0 1px #000,
-    0 0 0 3px var(--bezel-mid),
-    0 20px 50px rgba(0, 0, 0, 0.6),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
   position: relative;
 }
 
@@ -75,9 +69,8 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 6px 10px;
-  margin-bottom: 8px;
-  border-radius: 8px;
+  padding: calc(6px + env(safe-area-inset-top)) 10px 6px;
+  margin: -10px -10px 8px;
   background: linear-gradient(180deg, #2c2f4a, #16172a);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
   font-family: var(--font-display);
@@ -135,7 +128,7 @@ body {
 .visualizer {
   display: block;
   width: 100%;
-  height: 70px;
+  height: 140px;
   opacity: 0.9;
 }
 
@@ -245,8 +238,8 @@ input[type="range"]::-moz-range-track {
 
 .transport {
   display: flex;
-  align-items: center;
-  gap: 6px;
+  flex-direction: column;
+  gap: 8px;
   margin-top: 10px;
   padding: 8px;
   border-radius: 8px;
@@ -254,12 +247,28 @@ input[type="range"]::-moz-range-track {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
+.transport__buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.transport__modes {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .btn {
-  font-family: var(--font-display);
-  font-size: 15px;
-  width: 34px;
-  height: 34px;
-  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border-radius: 8px;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
@@ -269,6 +278,17 @@ input[type="range"]::-moz-range-track {
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
     0 0 0 1px rgba(0, 0, 0, 0.5);
   transition: color 0.15s ease, box-shadow 0.15s ease, transform 0.05s ease;
+}
+.btn svg {
+  width: 20px;
+  height: 20px;
+  filter: drop-shadow(0 0 0 transparent);
+  transition: filter 0.15s ease;
+}
+.btn:hover svg,
+.btn--play svg,
+.btn--toggle.active svg {
+  filter: drop-shadow(0 0 4px currentColor);
 }
 .btn:hover {
   color: var(--neon-cyan);
@@ -302,9 +322,8 @@ input[type="range"]::-moz-range-track {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-left: auto;
   flex: 1;
-  max-width: 140px;
+  min-width: 0;
 }
 .volume__icon {
   font-family: var(--font-display);
@@ -320,7 +339,7 @@ input[type="range"]::-moz-range-track {
   border-radius: 8px;
   background: linear-gradient(180deg, #10111c, #090a12);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  max-height: 200px;
+  max-height: min(200px, 28vh);
   display: flex;
   flex-direction: column;
 }
@@ -380,18 +399,35 @@ input[type="range"]::-moz-range-track {
   display: flex;
   justify-content: space-between;
   margin-top: 8px;
-  padding: 4px 10px;
+  padding: 4px 10px calc(4px + env(safe-area-inset-bottom));
   font-family: var(--font-display);
   font-size: 9px;
   color: var(--text-muted);
   letter-spacing: 0.5px;
+  gap: 8px;
 }
 .statusbar__brand {
   color: var(--neon-pink);
   opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-@media (max-width: 420px) {
-  .volume { max-width: 100px; }
-  .btn { width: 30px; height: 30px; font-size: 13px; }
+/* phones: tighten spacing and prioritize comfortable tap targets */
+@media (max-width: 480px) {
+  .titlebar { font-size: 11px; }
+  .visualizer { height: 110px; }
+  .lcd__marquee { font-size: 13px; }
+  .transport__buttons { gap: 6px; }
+  .btn { width: 44px; height: 44px; }
+  .btn svg { width: 22px; height: 22px; }
+  .volume__icon { display: none; }
+  .statusbar { font-size: 8px; }
+  .statusbar__brand { max-width: 55%; }
+}
+
+@media (max-width: 350px) {
+  .btn { width: 38px; height: 38px; }
+  .btn svg { width: 19px; height: 19px; }
 }

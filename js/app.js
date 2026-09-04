@@ -239,13 +239,22 @@
   function drawVisualizer() {
     const canvas = els.visualizer;
     const ctx = canvas.getContext("2d");
-    const width = canvas.width;
-    const height = canvas.height;
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = Math.round(rect.width * dpr);
+      canvas.height = Math.round(rect.height * dpr);
+    }
+    resizeCanvas();
+    window.addEventListener("resize", resizeCanvas);
 
     function render() {
       requestAnimationFrame(render);
       analyser.getByteFrequencyData(dataArray);
 
+      const width = canvas.width;
+      const height = canvas.height;
       ctx.clearRect(0, 0, width, height);
       const barCount = dataArray.length;
       const barWidth = width / barCount;

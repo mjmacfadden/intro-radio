@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<title>INTRO :: RETRO RADIO</title>
+<title>UNIT-1 :: RETRO RADIO</title>
 <meta name="theme-color" content="#0b0b17" />
 <meta name="description" content="A retro-futuristic, Winamp-inspired radio player" />
 <link rel="manifest" href="manifest.json" />
@@ -19,7 +19,7 @@
 
   <!-- Title bar -->
   <header class="titlebar">
-    <span class="titlebar__logo">◆ INTRO RADIO</span>
+    <span class="titlebar__logo">◆ UNIT&#8209;1 RADIO</span>
     <span class="titlebar__clock" id="clock">00:00:00</span>
     <span class="titlebar__dots" aria-hidden="true"><i></i><i></i><i></i></span>
   </header>
@@ -53,34 +53,18 @@
 
   <!-- Transport controls -->
   <section class="transport" aria-label="Playback controls">
-    <div class="transport__buttons">
-      <button id="btnPrev" class="btn btn--nav" title="Previous" aria-label="Previous track">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
-      </button>
-      <button id="btnPlay" class="btn btn--play" title="Play" aria-label="Play">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
-      </button>
-      <button id="btnPause" class="btn btn--nav" title="Pause" aria-label="Pause">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-      </button>
-      <button id="btnStop" class="btn btn--nav" title="Stop" aria-label="Stop">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 6h12v12H6z"/></svg>
-      </button>
-      <button id="btnNext" class="btn btn--nav" title="Next" aria-label="Next track">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-      </button>
-      <button id="btnShuffle" class="btn btn--toggle" title="Shuffle" aria-label="Toggle shuffle">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M10.59 9.17L5.41 4 4 5.41l5.17 5.17zm4.58-4.92l1.95 1.95L4 18.99 5.41 20.4 18.31 7.5l1.95 1.95V4h-5.09zm.32 8.5l-1.41 1.41 3.13 3.13-1.95 1.95H20V15h-5.09z"/></svg>
-      </button>
-      <button id="btnRepeat" class="btn btn--toggle" title="Repeat" aria-label="Toggle repeat">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M7 7h10v3l4-4-4-4v3H5v6h2zm10 10H7v-3l-4 4 4 4v-3h14v-6h-2z"/></svg>
-      </button>
-    </div>
-    <div class="transport__modes">
-      <div class="volume">
-        <span class="volume__icon" aria-hidden="true">VOL</span>
-        <input type="range" id="volume" min="0" max="100" value="80" aria-label="Volume" />
-      </div>
+    <button id="btnPrev" class="btn btn--nav" title="Previous" aria-label="Previous track">⏮</button>
+    <button id="btnPlay" class="btn btn--play" title="Play" aria-label="Play">▶</button>
+    <button id="btnPause" class="btn btn--nav" title="Pause" aria-label="Pause">⏸</button>
+    <button id="btnStop" class="btn btn--nav" title="Stop" aria-label="Stop">⏹</button>
+    <button id="btnNext" class="btn btn--nav" title="Next" aria-label="Next track">⏭</button>
+
+    <button id="btnShuffle" class="btn btn--toggle" title="Shuffle" aria-label="Toggle shuffle">🔀</button>
+    <button id="btnRepeat" class="btn btn--toggle" title="Repeat" aria-label="Toggle repeat">🔁</button>
+
+    <div class="volume">
+      <span class="volume__icon" aria-hidden="true">VOL</span>
+      <input type="range" id="volume" min="0" max="100" value="80" aria-label="Volume" />
     </div>
   </section>
 
