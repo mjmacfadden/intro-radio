@@ -96,7 +96,12 @@
   <!-- Playlist -->
   <section class="playlist" aria-label="Playlist">
     <div class="playlist__header">
-      <span>PLAYLIST</span>
+      <span class="playlist__title">PLAYLIST</span>
+      <div class="playlist__filters" role="tablist" aria-label="Unit filter">
+        <button type="button" class="btn--filter active" data-unit="all" role="tab" aria-selected="true">ALL</button>
+        <button type="button" class="btn--filter" data-unit="1" role="tab" aria-selected="false">UNIT 1</button>
+        <button type="button" class="btn--filter" data-unit="2" role="tab" aria-selected="false">UNIT 2</button>
+      </div>
       <span id="trackCount">0 TRACKS</span>
     </div>
     <ul id="playlistItems" class="playlist__list"></ul>

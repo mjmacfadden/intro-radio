@@ -1,5 +1,5 @@
 // INTRO RADIO — service worker: caches the app shell and tracks for offline playback.
-const CACHE_NAME = "intro-radio-v6";
+const CACHE_NAME = "intro-radio-v7";
 const ASSETS = [
   "./",
   "./index.html",
@@ -11,6 +11,10 @@ const ASSETS = [
   "./unit1/scarcity-and-opportunity-cost.mp3",
   "./unit1/six-roles.mp3",
   "./unit1/triple-bottom-line.mp3",
+  "./unit2/types-of-businesses.mp3",
+  "./unit2/Franchising.mp3",
+  "./unit2/finance and nivesting.mp3",
+  "./unit2/Investing Principles.mp3",
 ];
 
 self.addEventListener("install", (event) => {

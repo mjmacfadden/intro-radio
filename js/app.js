@@ -5,10 +5,16 @@
   "use strict";
 
   const TRACKS = [
-    { title: "Business Model Canvas", src: "unit1/business-model-canvas.mp3" },
-    { title: "Scarcity and Opportunity Cost", src: "unit1/scarcity-and-opportunity-cost.mp3" },
-    { title: "Six Roles", src: "unit1/six-roles.mp3" },
-    { title: "Triple Bottom Line", src: "unit1/triple-bottom-line.mp3" },
+    // Unit 1
+    { unit: 1, title: "Business Model Canvas", src: "unit1/business-model-canvas.mp3" },
+    { unit: 1, title: "Scarcity and Opportunity Cost", src: "unit1/scarcity-and-opportunity-cost.mp3" },
+    { unit: 1, title: "Six Roles", src: "unit1/six-roles.mp3" },
+    { unit: 1, title: "Triple Bottom Line", src: "unit1/triple-bottom-line.mp3" },
+    // Unit 2
+    { unit: 2, title: "Types of Businesses", src: "unit2/types-of-businesses.mp3" },
+    { unit: 2, title: "Franchising", src: "unit2/Franchising.mp3" },
+    { unit: 2, title: "Finance and Investing", src: "unit2/finance and nivesting.mp3" },
+    { unit: 2, title: "Investing Principles", src: "unit2/Investing Principles.mp3" },
   ];
 
   const $ = (id) => document.getElementById(id);
@@ -38,10 +44,10 @@
 
   const state = {
     currentIndex: 0,
+    filterUnit: "all", // 'all' | '1' | '2'
     shuffle: false,
     repeat: false, // repeat current track
     isSeeking: false,
-    order: TRACKS.map((_, i) => i),
   };
 
   // ---------------------------------------------------------------- utils
@@ -57,6 +63,16 @@
     els.statusText.textContent = text;
   }
 
+  function getActiveIndices() {
+    if (state.filterUnit === "all") {
+      return TRACKS.map((_, i) => i);
+    }
+    const target = Number(state.filterUnit);
+    return TRACKS
+      .map((t, i) => (t.unit === target ? i : -1))
+      .filter((i) => i !== -1);
+  }
+
   // ---------------------------------------------------------------- clock
 
   function tickClock() {
@@ -70,26 +86,62 @@
 
   function renderPlaylist() {
     els.playlistItems.innerHTML = "";
-    TRACKS.forEach((track, i) => {
+    const active = getActiveIndices();
+
+    active.forEach((trackIdx, displayIdx) => {
+      const track = TRACKS[trackIdx];
       const li = document.createElement("li");
-      li.className = "playlist__item" + (i === state.currentIndex ? " active" : "");
+      li.className = "playlist__item" + (trackIdx === state.currentIndex ? " active" : "");
       li.setAttribute("role", "button");
       li.setAttribute("tabindex", "0");
-      li.innerHTML = `<span class="idx">${String(i + 1).padStart(2, "0")}</span><span class="name">${track.title}</span>`;
-      li.addEventListener("click", () => loadTrack(i, true));
+      li.dataset.index = String(trackIdx);
+
+      const tagClass = track.unit === 1 ? "playlist__tag--u1" : "playlist__tag--u2";
+
+      li.innerHTML = `
+        <span class="idx">${String(displayIdx + 1).padStart(2, "0")}</span>
+        <span class="playlist__tag ${tagClass}">U${track.unit}</span>
+        <span class="name">${track.title}</span>
+      `;
+      li.addEventListener("click", () => loadTrack(trackIdx, true));
       li.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); loadTrack(i, true); }
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          loadTrack(trackIdx, true);
+        }
       });
       els.playlistItems.appendChild(li);
     });
-    els.trackCount.textContent = `${TRACKS.length} TRACKS`;
+
+    els.trackCount.textContent = `${active.length} TRACK${active.length === 1 ? "" : "S"}`;
   }
 
   function highlightPlaylist() {
-    [...els.playlistItems.children].forEach((li, i) => {
-      li.classList.toggle("active", i === state.currentIndex);
+    [...els.playlistItems.children].forEach((li) => {
+      li.classList.toggle("active", Number(li.dataset.index) === state.currentIndex);
     });
   }
+
+  function setFilter(unit, autoSwitchTrack = false) {
+    state.filterUnit = String(unit);
+    document.querySelectorAll(".btn--filter").forEach((btn) => {
+      const match = btn.dataset.unit === String(unit);
+      btn.classList.toggle("active", match);
+      btn.setAttribute("aria-selected", match ? "true" : "false");
+    });
+    renderPlaylist();
+
+    const active = getActiveIndices();
+    if (autoSwitchTrack && !active.includes(state.currentIndex) && active.length > 0) {
+      loadTrack(active[0], !audio.paused);
+    }
+  }
+
+  document.querySelectorAll(".btn--filter").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      setFilter(btn.dataset.unit, true);
+    });
+  });
 
   // ---------------------------------------------------------------- track loading
 
@@ -97,33 +149,43 @@
     state.currentIndex = index;
     const track = TRACKS[index];
     audio.src = encodeURI(track.src);
-    els.trackTitle.textContent = track.title.toUpperCase();
+    els.trackTitle.textContent = `[U${track.unit}] ${track.title.toUpperCase()}`;
     els.seek.value = 0;
     highlightPlaylist();
     if (autoplay) {
-      audio.play().then(() => setStatus(`PLAYING: ${track.title}`)).catch(() => setStatus("PLAYBACK BLOCKED — PRESS PLAY"));
+      audio.play().then(() => setStatus(`PLAYING: [U${track.unit}] ${track.title}`)).catch(() => setStatus("PLAYBACK BLOCKED — PRESS PLAY"));
     }
   }
 
   function playCurrent() {
     ensureAudioGraph();
-    audio.play().then(() => setStatus(`PLAYING: ${TRACKS[state.currentIndex].title}`)).catch(() => setStatus("PLAYBACK BLOCKED — PRESS PLAY"));
+    const track = TRACKS[state.currentIndex];
+    audio.play().then(() => setStatus(`PLAYING: [U${track.unit}] ${track.title}`)).catch(() => setStatus("PLAYBACK BLOCKED — PRESS PLAY"));
   }
 
   function nextIndex() {
+    const indices = getActiveIndices();
+    if (indices.length === 0) return 0;
     if (state.shuffle) {
+      if (indices.length === 1) return indices[0];
       let next;
       do {
-        next = Math.floor(Math.random() * TRACKS.length);
-      } while (next === state.currentIndex && TRACKS.length > 1);
+        next = indices[Math.floor(Math.random() * indices.length)];
+      } while (next === state.currentIndex && indices.length > 1);
       return next;
     }
-    return (state.currentIndex + 1) % TRACKS.length;
+    const currentPos = indices.indexOf(state.currentIndex);
+    if (currentPos === -1) return indices[0];
+    return indices[(currentPos + 1) % indices.length];
   }
 
   function prevIndex() {
+    const indices = getActiveIndices();
+    if (indices.length === 0) return 0;
     if (state.shuffle) return nextIndex();
-    return (state.currentIndex - 1 + TRACKS.length) % TRACKS.length;
+    const currentPos = indices.indexOf(state.currentIndex);
+    if (currentPos === -1) return indices[0];
+    return indices[(currentPos - 1 + indices.length) % indices.length];
   }
 
   // ---------------------------------------------------------------- controls
@@ -274,8 +336,18 @@
 
   // ---------------------------------------------------------------- init
 
-  renderPlaylist();
-  loadTrack(0, false);
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlHash = window.location.hash.toLowerCase();
+  let initialUnit = "all";
+  if (urlParams.get("unit") === "2" || urlHash.includes("unit2")) {
+    initialUnit = "2";
+  } else if (urlParams.get("unit") === "1" || urlHash.includes("unit1")) {
+    initialUnit = "1";
+  }
+
+  setFilter(initialUnit, false);
+  const activeInitial = getActiveIndices();
+  loadTrack(activeInitial.length > 0 ? activeInitial[0] : 0, false);
   setStatus("READY.");
 
   // ---------------------------------------------------------------- PWA service worker

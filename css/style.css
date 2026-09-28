@@ -339,7 +339,7 @@ input[type="range"]::-moz-range-track {
   border-radius: 8px;
   background: linear-gradient(180deg, #10111c, #090a12);
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
-  max-height: min(200px, 28vh);
+  max-height: min(240px, 34vh);
   display: flex;
   flex-direction: column;
 }
@@ -347,12 +347,44 @@ input[type="range"]::-moz-range-track {
 .playlist__header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 6px 10px;
   font-family: var(--font-display);
   font-size: 10px;
   color: var(--neon-cyan);
   letter-spacing: 1px;
   border-bottom: 1px solid rgba(77, 252, 255, 0.15);
+  gap: 8px;
+}
+
+.playlist__filters {
+  display: flex;
+  gap: 4px;
+}
+
+.btn--filter {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(77, 252, 255, 0.25);
+  color: var(--text-muted);
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn--filter:hover {
+  background: rgba(77, 252, 255, 0.15);
+  color: var(--neon-cyan);
+}
+
+.btn--filter.active {
+  background: rgba(77, 252, 255, 0.25);
+  border-color: var(--neon-cyan);
+  color: var(--neon-cyan);
+  box-shadow: 0 0 6px rgba(77, 252, 255, 0.4);
 }
 
 .playlist__list {
@@ -385,6 +417,24 @@ input[type="range"]::-moz-range-track {
 .playlist__item .idx {
   color: var(--text-muted);
   min-width: 18px;
+}
+.playlist__tag {
+  font-size: 8px;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+.playlist__tag--u1 {
+  background: rgba(77, 252, 255, 0.12);
+  color: var(--neon-cyan);
+  border: 1px solid rgba(77, 252, 255, 0.3);
+}
+.playlist__tag--u2 {
+  background: rgba(255, 62, 200, 0.12);
+  color: var(--neon-pink);
+  border: 1px solid rgba(255, 62, 200, 0.3);
 }
 .playlist__item .name {
   flex: 1;
@@ -430,4 +480,5 @@ input[type="range"]::-moz-range-track {
 @media (max-width: 350px) {
   .btn { width: 38px; height: 38px; }
   .btn svg { width: 19px; height: 19px; }
+  .playlist__title { display: none; }
 }
